@@ -26,11 +26,11 @@
    <string>Budget</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QDateEdit" name="dateEdit">
+   <widget class="QDateEdit" name="win_calendar_today">
     <property name="geometry">
      <rect>
       <x>569</x>
-      <y>20</y>
+      <y>10</y>
       <width>191</width>
       <height>51</height>
      </rect>
@@ -41,11 +41,11 @@
      </font>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="win_count_add_money">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>70</y>
+      <y>40</y>
       <width>381</width>
       <height>41</height>
      </rect>
@@ -59,11 +59,11 @@
      <string>123</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="win_label_add_money">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>30</y>
+      <y>10</y>
       <width>231</width>
       <height>31</height>
      </rect>
@@ -77,11 +77,11 @@
      <string>Поступления:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="win_label_del_money">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>120</y>
+      <y>80</y>
       <width>311</width>
       <height>61</height>
      </rect>
@@ -95,11 +95,11 @@
      <string>Траты</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="win_count_del_money">
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>170</y>
+      <y>130</y>
       <width>381</width>
       <height>41</height>
      </rect>
@@ -113,11 +113,11 @@
      <string>321</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="win_button_day">
     <property name="geometry">
      <rect>
       <x>570</x>
-      <y>120</y>
+      <y>100</y>
       <width>191</width>
       <height>61</height>
      </rect>
@@ -131,11 +131,11 @@
      <string>День</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="win_button_week">
     <property name="geometry">
      <rect>
       <x>570</x>
-      <y>190</y>
+      <y>170</y>
       <width>191</width>
       <height>61</height>
      </rect>
@@ -149,11 +149,11 @@
      <string>Неделя</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="win_button_month">
     <property name="geometry">
      <rect>
       <x>570</x>
-      <y>260</y>
+      <y>240</y>
       <width>191</width>
       <height>61</height>
      </rect>
@@ -167,11 +167,11 @@
      <string>Месяц</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="win_label_my_job">
     <property name="geometry">
      <rect>
       <x>566</x>
-      <y>333</y>
+      <y>330</y>
       <width>201</width>
       <height>20</height>
      </rect>
@@ -187,11 +187,11 @@
      <string>powered by svetgrak</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="win_button_add_money">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>240</y>
+      <x>10</x>
+      <y>290</y>
       <width>191</width>
       <height>61</height>
      </rect>
@@ -205,11 +205,11 @@
      <string>Добавить деняг</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="win_button_del_money">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>240</y>
+      <x>250</x>
+      <y>290</y>
       <width>191</width>
       <height>61</height>
      </rect>
@@ -221,6 +221,42 @@
     </property>
     <property name="text">
      <string>Тратить!</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="win_label_result_money">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>170</y>
+      <width>311</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Осталось</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="win_count_result_money">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>220</y>
+      <width>381</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>000</string>
     </property>
    </widget>
   </widget>
@@ -237,30 +273,30 @@
     <property name="title">
      <string>База</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
-    <addaction name="action_3"/>
-    <addaction name="action_4"/>
+    <addaction name="win_create_database"/>
+    <addaction name="win_delete_database"/>
+    <addaction name="win_creat_table"/>
+    <addaction name="win_add_test_data"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action">
+  <action name="win_create_database">
    <property name="text">
     <string>Создать базу</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="win_delete_database">
    <property name="text">
     <string>Удалить базу</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="win_creat_table">
    <property name="text">
     <string>Создать таблицу</string>
    </property>
   </action>
-  <action name="action_4">
+  <action name="win_add_test_data">
    <property name="text">
     <string>Заполнить таблицу тестовыми данными</string>
    </property>

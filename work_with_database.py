@@ -4,13 +4,14 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 from database_info import *
 
-
+#подключение к postgreSQL (возвращает подключение)
 def open_connection_psql():
     try:
-        connection = psycopg2.connect(user=psql_user,
-                                      password=psql_password,
-                                      host=psql_host,
-                                      port=psql_port)
+        connection = psycopg2.connect(
+            user=psql_user,
+            password=psql_password,
+            host=psql_host,
+            port=psql_port)
         print("Соединение c PostgreSQL установлено")
         connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
@@ -20,16 +21,18 @@ def open_connection_psql():
     return connection
 
 
+#подключение к базе данных по имени database_name (возвращает подключение)
 def open_connection_database(database_name):
 
     try:
-        connection = psycopg2.connect(user=psql_user,
-                                      password=psql_password,
-                                      host=psql_host,
-                                      port=psql_port,
-                                      database=database_name)
+        connection = psycopg2.connect(
+            user=psql_user,
+            password=psql_password,
+            host=psql_host,
+            port=psql_port,
+            database=database_name)
 
-        print("Соединение c базой "+database_name+" установлено")
+        print("Соединение c базой " + database_name + " установлено")
         connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
     except (Exception, Error) as error:
@@ -37,6 +40,7 @@ def open_connection_database(database_name):
 
     return connection
 
+#закрыть любое подключение (передать подключение)
 def close_connection(connection):
 
     try:
@@ -46,7 +50,7 @@ def close_connection(connection):
     except (Exception, Error) as error:
         print("Ошибка при работе с PostgreSQL", error)
 
-
+#создать базу данных (передать назавание базы данных)
 def create_database(database_name):
 
     try:
@@ -65,11 +69,12 @@ def create_database(database_name):
 
     return
 
+#удалить базу данных (передать имя базы данных и подключение к postgreSQL)
 def delete_database(database_name, connection):
     try:
 
         cursor = connection.cursor()
-        sql_delete_database = 'DROP DATABASE '+ database_name
+        sql_delete_database = 'DROP DATABASE ' + database_name
         cursor.execute(sql_delete_database)
         print("База данных " + database_name + " удалена")
 
@@ -77,7 +82,7 @@ def delete_database(database_name, connection):
         print("Ошибка при работе с PostgreSQL", error)
     return
 
-
+#создать таблицу (передать подключение к базе данных)
 def create_table(connection_database):
     try:
 
