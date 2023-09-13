@@ -6,7 +6,6 @@ from database_info import *
 
 
 class WorkWithPostgreSQL(object):
-
     connect_user = psql_user
     connect_password = psql_password
     connect_host = psql_host
@@ -21,8 +20,10 @@ class WorkWithPostgreSQL(object):
     # подключение к postgreSQL (возвращает подключение)
     def open_connection(self):
         try:
-            self.connection = psycopg2.connect(user=self.connect_user, password=self.connect_password,
-                                          host=self.connect_host, port=self.connect_port)
+            self.connection = psycopg2.connect(
+                user = self.connect_user, password = self.connect_password,
+                host = self.connect_host, port = self.connect_port
+            )
             print("Соединение c PostgreSQL установлено")
             self.connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
@@ -40,14 +41,15 @@ class WorkWithPostgreSQL(object):
         except (Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
 
-    #создание базы данных budget_project, передать подключение к postgreSQL
+    # создание базы данных budget_project, передать подключение к postgreSQL
     def create_database(self):
         try:
             self.connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cursor = self.connection.cursor()
             sql_create_database = 'CREATE DATABASE ' + self.database_name
             cursor.execute(sql_create_database)
-            print("База данных " + self.database_name + " успешно создана!")
+            print("База данных ", self.database_name, " успешно создана!")
+            self.connection.commit()
 
         except (Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
@@ -60,7 +62,8 @@ class WorkWithPostgreSQL(object):
             cursor = self.connection.cursor()
             sql_delete_database = 'DROP DATABASE ' + self.database_name
             cursor.execute(sql_delete_database)
-            print("База данных " + self.database_name + " удалена")
+            print("База данных ", self.database_name, " удалена")
+            self.connection.commit()
 
         except(Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
@@ -69,11 +72,13 @@ class WorkWithPostgreSQL(object):
     # подключение к базе данных по имени database_name (возвращает подключение)
     def open_connection_database(self):
         try:
-            self.connection = psycopg2.connect(user=self.connect_user, password=self.connect_password,
-                                          host=self.connect_host, port=self.connect_port,
-                                          dbname=self.database_name)
+            self.connection = psycopg2.connect(
+                user = self.connect_user, password = self.connect_password,
+                host = self.connect_host, port = self.connect_port,
+                dbname = self.database_name
+            )
 
-            print("Соединение c базой " + self.database_name + " установлено")
+            print("Соединение c базой ", self.database_name, " установлено")
             self.connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 
         except (Exception, Error) as error:
@@ -94,16 +99,11 @@ class WorkWithPostgreSQL(object):
                                 comment text
                                 )'''
             cursor_database.execute(create_table_query)
-            print("Таблица " + self.table_name + " успешно создана!")
+            print("Таблица ", self.table_name, " успешно создана!")
             self.connection.commit()
 
         except (Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
-
-    # создание автоинкремента в таблице для столбца id
-    def create_increment_in_table(self):
-        return
-
 
     # очистить таблицу (передать подключение к базе данных)
     def truncate_table(self):
@@ -112,7 +112,8 @@ class WorkWithPostgreSQL(object):
             query_truncate_table = "TRUNCATE " + self.table_name
 
             cursor_database.execute(query_truncate_table)
-            print("Таблица " + self.table_name + " очищена")
+            print("Таблица ", self.table_name, " очищена")
+            self.connection.commit()
 
         except(Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
@@ -124,31 +125,42 @@ class WorkWithPostgreSQL(object):
             query_truncate_table = "DROP TABLE " + self.table_name
 
             cursor_database.execute(query_truncate_table)
-            print("Таблица " + self.table_name + " удалена")
+            print("Таблица ", self.table_name, " удалена")
+            self.connection.commit()
 
         except(Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
 
-
-
-    #добавить транзакцию в таблицу
-    def insert_transaction_in_table(self, data_insert):
+    # добавить транзакцию в таблицу
+    def insert_transaction_in_table(self, data_tag, data):
         try:
             cursor_database = self.connection.cursor()
-            query_insert_in_table = ("INSERT INTO " + self.table_name +
-                                     "(tag,day,money,category,comment) VALUES ('+', '2023-09-12', 100, 'питание работа', 'энергетос')")
+            data_day, data_money, data_category, data_comment = data
+
+            query_insert_in_table = ("INSERT INTO " + self.table_name + f"(tag,day,money,category,comment) VALUES ('{data_tag}','{data_day}',{data_money},'{data_category}','{data_comment}')")
+
             cursor_database.execute(query_insert_in_table)
             print("Данные добавлены")
             self.connection.commit()
         except(Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
 
-    #удалить транзакцию из таблицы
+        return
 
+    # удалить транзакцию из таблицы
+    def delete_transaction_in_table(self,id_transaction):
+        try:
+            cursor_database = self.connection.cursor()
+
+            print("Данные удалены")
+            self.connection.commit()
+        except(Exception, Error) as error:
+            print("Ошибка при работе с PostgreSQL", error)
+
+        return
 
 
 def init_database():
-
     psql = WorkWithPostgreSQL()
     psql.close_connection()
     psql.open_connection()
@@ -157,17 +169,18 @@ def init_database():
 
     psql.open_connection_database()
     psql.create_table()
-    psql.insert_transaction_in_table('123')
     psql.close_connection()
 
 
+def drop_database():
+    psql = WorkWithPostgreSQL()
+    psql.close_connection()
+    psql.open_connection()
+    psql.delete_database()
+    psql.close_connection()
+
+
+zarplata = ['2023-09-10', 25000, 'Света зарплата', 'зарплата']
 psql = WorkWithPostgreSQL()
+psql.insert_transaction_in_table('+', zarplata)
 psql.close_connection()
-psql.open_connection()
-psql.delete_table()
-psql.close_connection()
-init_database()
-
-
-
-
