@@ -86,7 +86,7 @@ class WorkWithPostgreSQL(object):
         try:
             cursor_database = self.connection.cursor()
             create_table_query = '''CREATE TABLE ''' + self.table_name + ''' ( 
-                                id bigint PRIMARY KEY,
+                                id SERIAL PRIMARY KEY,
                                 tag text NOT NULL,
                                 day date NOT NULL,
                                 money int NOT NULL,
@@ -99,6 +99,10 @@ class WorkWithPostgreSQL(object):
 
         except (Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
+
+    # создание автоинкремента в таблице для столбца id
+    def create_increment_in_table(self):
+        return
 
 
     # очистить таблицу (передать подключение к базе данных)
@@ -125,12 +129,14 @@ class WorkWithPostgreSQL(object):
         except(Exception, Error) as error:
             print("Ошибка при работе с PostgreSQL", error)
 
+
+
     #добавить транзакцию в таблицу
     def insert_transaction_in_table(self, data_insert):
         try:
             cursor_database = self.connection.cursor()
             query_insert_in_table = ("INSERT INTO " + self.table_name +
-                                     " VALUES ('+', '2023-09-12', 100, 'питание работа', 'энергетос')")
+                                     "(tag,day,money,category,comment) VALUES ('+', '2023-09-12', 100, 'питание работа', 'энергетос')")
             cursor_database.execute(query_insert_in_table)
             print("Данные добавлены")
             self.connection.commit()
@@ -140,17 +146,28 @@ class WorkWithPostgreSQL(object):
     #удалить транзакцию из таблицы
 
 
+
+def init_database():
+
+    psql = WorkWithPostgreSQL()
+    psql.close_connection()
+    psql.open_connection()
+    psql.create_database()
+    psql.close_connection()
+
+    psql.open_connection_database()
+    psql.create_table()
+    psql.insert_transaction_in_table('123')
+    psql.close_connection()
+
+
 psql = WorkWithPostgreSQL()
 psql.close_connection()
 psql.open_connection()
-psql.create_database()
-psql.close_connection()
-
-psql.open_connection_database()
 psql.delete_table()
-psql.create_table()
-psql.insert_transaction_in_table('123')
 psql.close_connection()
+init_database()
+
 
 
 
